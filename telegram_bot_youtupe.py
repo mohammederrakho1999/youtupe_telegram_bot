@@ -4,9 +4,6 @@ import tldextract
 import os
 import telebot
 import re
-import requests
-from bs4 import BeautifulSoup
-import time
 import shutil
 from os import listdir
 from os.path import isfile, join
