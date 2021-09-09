@@ -4,19 +4,28 @@ import tldextract
 import os
 import telebot
 import re
-import shutil
 from os import listdir
 from os.path import isfile, join
 import string
 import numpy as np
 
 
-with open('credentils.txt') as f:
-    API_KEY = f.readlines()[0].split("=")[1]
-bot = telebot.TeleBot(API_KEY)
+def get_bot(credentials):
+    """get the telegram bot object.
+    """
+    with open(credentials) as f:
+        API_KEY = f.readlines()[0].split("=")[1]
+    bot = telebot.TeleBot(API_KEY)
+
+    return bot
+
+
+bot = get_bot('credentils.txt')
 
 
 def find_cm_title(title):
+    """get complete video title from root directory
+    """
     cwd = os.getcwd()
     onlyfiles = [f for f in listdir(cwd) if isfile(join(cwd, f))]
     res = [i for i in onlyfiles if title in i]
