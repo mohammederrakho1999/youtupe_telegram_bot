@@ -86,7 +86,11 @@ def download_video(message, video_url):
 def dowload_video(message):
     # with open("video1.mp4", 'rb') as fn:
     url = find_url(message)
-    if message:
+
+    if str(url[0]).endswith(".jpg"):
+        bot.send_photo(
+            message.chat.id, url[0])
+    else:
         download_video(message, url)
 
 
