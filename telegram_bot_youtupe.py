@@ -8,6 +8,7 @@ from os import listdir
 from os.path import isfile, join
 import string
 import numpy as np
+from s3_module import *
 
 
 def get_bot(credentials):
@@ -80,6 +81,16 @@ def download_video(message, video_url):
         raise e
 
     return True
+
+
+@bot.message_handler(commands=["download"])
+def get_s3_cached_videos(message):
+
+    bot.send_chat_action(message.chat.id, "typing")
+    objects = list_s3_files(
+        "landingzone1999c7acde43-8029-49ce-b848-153513fd51c6")
+    file_names = ' '.join(object)
+    bot.send_message(message, file_names)
 
 
 @bot.message_handler(func=lambda m: True)
