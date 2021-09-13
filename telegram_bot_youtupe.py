@@ -83,13 +83,20 @@ def download_video(message, video_url):
     return True
 
 
-@bot.message_handler(commands=["download"])
+@bot.message_handler(commands=["start"])
+def send_intruction(message):
+    bot.send_chat_action(message.chat.id, "typing")
+    text = f"⛈🎉🌹🐧😊 Hello {message.from_user.first_name} \nthis bot aim is to download your videos from youtube \njust by passing the video url"
+    bot.send_message(message, text)
+
+
+@bot.message_handler(commands=["my_videos"])
 def get_s3_cached_videos(message):
 
     bot.send_chat_action(message.chat.id, "typing")
     objects = list_s3_files(
         "landingzone1999c7acde43-8029-49ce-b848-153513fd51c6")
-    file_names = ' '.join(object)
+    file_names = ' '.join(objects)
     bot.send_message(message, file_names)
 
 
