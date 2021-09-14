@@ -87,27 +87,40 @@ def download_video(message, video_url):
 def send_intruction(message):
     bot.send_chat_action(message.chat.id, "typing")
     text = f"⛈🎉🌹🐧😊 Hello {message.from_user.first_name} \nthis bot aim is to download your videos from youtube \njust by passing the video url"
-    bot.send_message(message, text)
+    bot.send_message(message.chat.id, text)
 
 
 @bot.message_handler(commands=["my_videos"])
 def get_s3_cached_videos(message):
 
     bot.send_chat_action(message.chat.id, "typing")
-    objects = list_s3_files(
-        "landingzone1999c7acde43-8029-49ce-b848-153513fd51c6")
-    file_names = ' '.join(objects)
-    bot.send_message(message, file_names)
+    objects = list_s3_files(config.get("BUCKET", "bucket_name"))
+    file_names = ' \n'.join(objects)
+    bot.send_message(message.chat.id, file_names)
+
+
+@bot.message_handler(commands=["download"])
+def get_s3_cached_videos(message):
+    bot.send_chat_action(message.chat.id, "typing")
+    videos_names = download_all_files(config.get("BUCKET", "bucket_name"))
+    file_names = f"these videos is now available \n{'-'.join(videos_names)}"
+    bot.send_message(message.chat.id, file_names)
 
 
 @bot.message_handler(func=lambda m: True)
 def dowload_video(message):
     # with open("video1.mp4", 'rb') as fn:
-    url = find_url(message)
+    try:
+        url = find_url(message)
+    except Exception as e:
+        raise e
 
     if str(url[0]).endswith(".jpg"):
         bot.send_photo(
             message.chat.id, url[0])
+    elif str(url[0]).endswith(".mp4"):
+        with open(str(message), "rb") as vds:
+            bot.send_video(message.chat.id, vds)
     else:
         download_video(message, url)
 
