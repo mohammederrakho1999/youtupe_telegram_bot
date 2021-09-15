@@ -25,7 +25,17 @@ bot = get_bot('credentils.txt')
 
 
 def find_cm_title(title):
-    """get complete video title from root directory
+    """get full title name from the root directory.
+
+    Parameters
+    ----------
+    title : str
+        String to be extracted.
+
+    Returns
+    -------
+    Optional[str]
+        Return title if present.
     """
     cwd = os.getcwd()
     onlyfiles = [f for f in listdir(cwd) if isfile(join(cwd, f))]
@@ -51,6 +61,13 @@ def find_url(text):
 
 def download_video(message, video_url):
     """download youtupe video given it's url.
+
+    Parameters
+    ----------
+    message : str
+        message object from telegram.
+    video_url: str
+        video url from youtupe
     """
     youtube = pytube.YouTube(str(video_url))
     try:
