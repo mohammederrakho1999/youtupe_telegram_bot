@@ -37,5 +37,3 @@ def download_all_files(bucket_name):
         raise e
     return True
 
-
-# download_all_files("landingzone1999c7acde43-8029-49ce-b848-153513fd51c6")
